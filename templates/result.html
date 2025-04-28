@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prediction Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>Plant Disease Detection</h1>
+    <form action="/clear_history" method="post" style="display:inline;">
+      <button type="submit" class="clear-btn">Clear History</button>
+    </form>
+  </header>
+  <div class="container">
+    <h2>Prediction Result</h2>
+    <p><strong>Prediction:</strong> {{ prediction }}</p>
+    <p><strong>Confidence:</strong> {{ confidence }}%</p>
+    <div class="result">
+      <img src="{{ img_path }}" alt="Uploaded Image" />
+    </div>
+    <a href="/">Go Back</a>
+
+    {% if history %}
+    <h3>Recent Predictions</h3>
+    <div class="history">
+      {% for item in history %}
+      <div class="history-item">
+        <img src="{{ item.img_path }}" alt="History Image" />
+        <p><strong>{{ item.prediction }}</strong></p>
+        <p>{{ item.confidence }}%</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

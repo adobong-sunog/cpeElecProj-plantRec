@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+class_indices.json
+
+dataset/
+
+# static/uploads/
+
+.env
+.venv/
+env/
+venv/
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
