@@ -1,5 +1,3 @@
-# === trainer.py ===
-
 import os
 import numpy as np
 import tensorflow as tf
@@ -11,7 +9,6 @@ from tensorflow.keras import layers, models, optimizers
 from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 
-# === Configurations ===
 img_width, img_height = 224, 224
 batch_size = 32
 epochs = 20
@@ -20,7 +17,6 @@ train_dir = os.path.join(base_dir, 'Train')
 validation_dir = os.path.join(base_dir, 'Validation')
 test_dir = os.path.join(base_dir, 'Test')
 
-# === Data Generators ===
 train_datagen = ImageDataGenerator(
     rescale=1./255,
     rotation_range=30,
@@ -56,11 +52,9 @@ test_generator = val_test_datagen.flow_from_directory(
     shuffle=False
 )
 
-# Save class indices for Flask app
 with open('class_indices.json', 'w') as f:
     json.dump(train_generator.class_indices, f)
 
-# === Build Model ===
 base_model = VGG16(weights='imagenet', include_top=False, input_shape=(img_width, img_height, 3))
 for layer in base_model.layers:
     layer.trainable = False
@@ -77,7 +71,6 @@ model.compile(optimizer=optimizers.Adam(learning_rate=1e-4),
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-# === Train Model ===
 history = model.fit(
     train_generator,
     steps_per_epoch=train_generator.samples // batch_size,
@@ -86,14 +79,11 @@ history = model.fit(
     validation_steps=validation_generator.samples // batch_size
 )
 
-# === Save Model ===
 model.save('plant_disease_model.h5')
 
-# === Evaluate Model ===
 test_loss, test_accuracy = model.evaluate(test_generator, steps=test_generator.samples // batch_size)
 print(f"Test Accuracy: {test_accuracy * 100:.2f}%")
 
-# === Plot Accuracy and Loss ===
 plt.figure(figsize=(12, 4))
 plt.subplot(1, 2, 1)
 plt.plot(history.history['accuracy'], label='Train')
@@ -114,7 +104,6 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-# === Optional: Classification Report and Confusion Matrix ===
 predictions = model.predict(test_generator, steps=test_generator.samples // batch_size)
 predicted_classes = np.argmax(predictions, axis=1)
 true_classes = test_generator.classes[:len(predicted_classes)]

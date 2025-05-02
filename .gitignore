@@ -3,12 +3,13 @@ __pycache__/
 *.pyo
 *.pyd
 
-
 class_indices.json
 
 dataset/
 
-# static/uploads/
+static/uploads/*/
+
+users.db
 
 .env
 .venv/

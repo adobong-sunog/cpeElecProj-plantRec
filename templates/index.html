@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Plant Disease Detection</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <header>
     <h1>Plant Disease Detection</h1>
-    <form action="/clear_history" method="post" style="display:inline;">
-      <button type="submit" class="clear-btn">Clear History</button>
-    </form>
+    <div class="nav">
+      {% if session.user_id %}
+        Logged in as {{ session.username }} |
+        <a href="{{ url_for('index') }}">Home</a> |
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% if session.is_admin %}| <a href="{{ url_for('admin') }}">Admin</a>{% endif %}
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a> |
+        <a href="{{ url_for('register') }}">Register</a>
+      {% endif %}
+    </div>
   </header>
   <div class="container">
     <h2>Upload an Image</h2>
-    <form action="/predict" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file" required />
+    <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" required>
       <button type="submit">Predict</button>
     </form>
-
     {% if history %}
-    <h3>Recent Predictions</h3>
+    <h3>Your Recent Predictions</h3>
     <div class="history">
       {% for item in history %}
       <div class="history-item">
-        <img src="{{ item.img_path }}" alt="History Image" />
-        <p><strong>{{ item.prediction }}</strong></p>
-        <p>{{ item.confidence }}%</p>
+        <img src="{{ url_for('static', filename=item.img_path) }}" alt="">
+        <p><strong>{{ item.prediction }}</strong> ({{ '%.2f'|format(item.confidence) }}%)</p>
+        <p><small>{{ item.timestamp }}</small></p>
       </div>
       {% endfor %}
     </div>
