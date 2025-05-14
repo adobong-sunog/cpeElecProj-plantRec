@@ -9,6 +9,8 @@ dataset/
 
 static/uploads/*/
 
+training_results_*/
+
 users.db
 
 .env

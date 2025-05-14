@@ -91,7 +91,8 @@ def index():
         "WHERE user_id=? ORDER BY timestamp DESC LIMIT ?",
         (session['user_id'], MAX_HISTORY)
     ).fetchall()
-    return render_template('index.html', history=rows)
+    default_icon_path = 'rscrs/icon.png'
+    return render_template('index.html', history=rows, icon=default_icon_path)
 
 @app.route('/predict', methods=['POST'])
 @login_required
@@ -184,7 +185,14 @@ def predict():
         preds = model.predict(preprocess(abs_path))[0]
         idx = int(np.argmax(preds))
         conf = float(preds[idx] * 100)
-        label = CLASS_LABELS[idx]
+        
+        # Add confidence threshold check
+        confidence_threshold = 70.0  # Adjust this value based on testing
+        if conf < confidence_threshold:
+            label = "Not a leaf or unrecognized"
+        else:
+            label = CLASS_LABELS[idx]
+            
         app.logger.info(f"Prediction: {label}, Confidence: {conf}%")
     except Exception as e:
         app.logger.error(f"Error during prediction: {str(e)}")
@@ -216,15 +224,29 @@ def predict():
                         img_path=rel,
                         history=rows)
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'POST':
+        form_type = request.form.get('form_type')
         u = request.form['username'].strip()
         p = request.form['password']
-        if not u or not p:
-            flash('User/pass required', 'error')
-        else:
-            db = get_db()
+        db = get_db()
+
+        if form_type == 'login':    
+            row = db.execute("SELECT * FROM users WHERE username=?", (u,)).fetchone()
+            if row and check_password_hash(row['password'], p):
+                session.clear()
+                session['user_id'] = row['id']
+                session['username'] = row['username']
+                session['is_admin'] = bool(row['is_admin'])
+                return redirect(url_for('index'))
+            flash('Invalid', 'error')
+            
+        elif form_type == 'register':
+            if not u or not p:
+                flash('User/pass required', 'error')
+            else:
+                db = get_db()
             try:
                 db.execute("INSERT INTO users(username, password) VALUES(?, ?)",
                            (u, generate_password_hash(p)))
@@ -233,22 +255,6 @@ def register():
                 return redirect(url_for('login'))
             except sqlite3.IntegrityError:
                 flash('Taken', 'error')
-    return render_template('register.html')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        u = request.form['username'].strip()
-        p = request.form['password']
-        db = get_db()
-        row = db.execute("SELECT * FROM users WHERE username=?", (u,)).fetchone()
-        if row and check_password_hash(row['password'], p):
-            session.clear()
-            session['user_id'] = row['id']
-            session['username'] = row['username']
-            session['is_admin'] = bool(row['is_admin'])
-            return redirect(url_for('index'))
-        flash('Invalid', 'error')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -300,6 +306,10 @@ def delete_user(user_id):
         get_db().commit()
         flash('Deleted', 'info')
     return redirect(url_for('admin'))
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
