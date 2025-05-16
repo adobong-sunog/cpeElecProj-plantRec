@@ -39,7 +39,7 @@
     <h2>Registered Users</h2>
     <table>
       <thead>
-        <tr><th>ID</th><th>Username</th><th>Admin?</th><th>Action</th></tr>
+        <tr><th>ID</th><th>Username</th><th>Admin</th><th>Action</th></tr>
       </thead>
       <tbody>
         {% for u in users %}
@@ -49,7 +49,7 @@
           <td>{{ 'Yes' if u.is_admin else 'No' }}</td>
           <td>
             <form action="{{ url_for('delete_user', user_id=u.id) }}" method="post" style="display:inline">
-              <button type="submit" {% if u.id==session.user_id %}disabled{% endif %}>Delete</button>
+              <button type="submit" id="delete-button" {% if u.id==session.user_id %}disabled{% endif %}>Delete</button>
             </form>
           </td>
         </tr>
@@ -61,8 +61,12 @@
     <form action="{{ url_for('add_user') }}" method="post">
       <input type="text" name="username" placeholder="Username" required>
       <input type="password" name="password" placeholder="Password" required>
-      <label><input type="checkbox" name="is_admin"> Make Admin</label>
-      <button type="submit">Add User</button>
+      <div class="checkbox">
+        <input id="cbx-42" type="checkbox" name="is_admin" />
+        <label class="cbx" for="cbx-42"></label>
+        <label class="lbl" for="cbx-42">Make Admin</label>
+      </div>
+      <button type="submit" id="add-button">Add User</button>
     </form>
   </div>
 </body>

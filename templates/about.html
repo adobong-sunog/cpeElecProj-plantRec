@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-  <header>
+  <header id="about-header">
     <nav>
       {% if session.user_id %}
 			<input type="checkbox" id="check">
@@ -23,9 +23,9 @@
 			<label class="logo">Plant Disease Detection</label>
       <ul>
         <li>Logged in as {{ session.username }}</li>
-        <li><a class="active" href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
         <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a class="active" href="{{ url_for('about') }}">About</a></li>
         {% if session.is_admin %}
          <li><a href="{{ url_for('admin') }}">Admin</a></li>
         {% endif %}
@@ -36,8 +36,82 @@
       </ul>
     </nav>
   </header>
-  <div class="container">
-    <h1>WALANG LAMAN HAHAHA</h1>
-  </div>
+  <section class="parallax">
+    <img src="{{ url_for('static', filename=hill1) }}" id="hill1">
+    <img src="{{ url_for('static', filename=hill2) }}" id="hill2">
+    <img src="{{ url_for('static', filename=hill3) }}" id="hill3">
+    <img src="{{ url_for('static', filename=hill4) }}" id="hill4">
+    <img src="{{ url_for('static', filename=hill5) }}" id="hill5">
+    <img src="{{ url_for('static', filename=tree) }}" id="tree">
+    <h2 id="text">About Us</h2>
+    <img src="{{ url_for('static', filename=leaf) }}" id="leaf">
+    <img src="{{ url_for('static', filename=plant) }}" id="plant">
+  </section>
+  <section class="sec">
+    <h4>Foliar Plant Disease Diagnosing using Image-Based Recognition and Automated Detection and Classification</h4>
+    <p>
+      The application we developed is an advanced mobile application designed to eventually revolutionize plant health monitoring and disease management in agriculture. Leveraging the power of computer vision and machine learning, the application enables farmers, agronomists, researchers, and agricultural extension workers to quickly and accurately identify visible foliar (leaf-based) diseases in plants using just an image. <br><br>
+      With the increasing threats to global crop productivity caused by plant diseases, early detection is critical. This application offers a highly productive and accessible tool for diagnosing plant health issues, allowing users to simply capture or upload a photo of a plant leaf. Through sophisticated image processing and machine learning algorithms, the system of the application analyzes the visible features of the leaf—such as color, texture, and pattern distortions—to detect and classify the type of disease present. <br><br>
+      The application supports a growing database of plant species and common foliar diseases, ensuring broad applicability across various agricultural sectors. It offers real-time feedback, disease severity assessment, suggested remedies, and best practices for mitigation—all in a user-friendly interface. Designed for both online and offline use, the application is ideal for deployment in remote or low-connectivity farming areas. <br><br>
+    </p>
+  </section>
+  <section class="sec2">
+    <h2>Meet The Team</h2>
+  </section>
+  <section class="sec2daniel">
+    <div class="textdaniel">
+      <h4>Daniel Paris T. Salvacion</h4>
+      <h5>Developer - BackEnd</h5> 
+    </div>
+    <div class="imgdaniel">
+      <img src="{{ url_for('static', filename=danielimg) }}">
+    </div>
+    </section>
+  <section class="sec2lim">
+    <div class="imglim">
+      <img src="{{ url_for('static', filename=limimg) }}">
+    </div>
+    <div class="textlim">
+      <h4>Ulhric James O. Lim</h4>
+      <h5>Lead Design - FrontEnd</h5> 
+    </div>
+  </section>
+  <section class="sec2fuentes">
+    <div class="textfuentes">
+      <h4>Danicajoy S. Fuentes</h4>
+      <h5>Document Team</h5>
+    </div>
+    <div class="imgfuentes">
+      <img src="{{ url_for('static', filename=fuentesimg) }}">
+    </div>
+  </section>
+  <section class="sec2arguelles">
+    <div class="imgarguelles">
+      <img src="{{ url_for('static', filename=arguellesimg) }}">
+    </div>
+    <div class="textarguelles">
+      <h4>Mikaela Annabette F. Arguelles</h4>
+      <h5>Document Team</h5>
+    </div>
+  </section>
+  <section class="sec2almoro">
+    <div class="textalmoro">
+      <h4>Cristian Nhestine Almoro</h4>
+      <h5>Document Team</h5>
+    </div>
+    <div class="imgalmoro">
+      <img src="{{ url_for('static', filename=almoroimg) }}">
+    </div>
+  </section>
+  <section class="sec2renes">
+    <div class="imgrenes">
+      <img src="{{ url_for('static', filename=renesimg) }}">
+    </div>
+    <div class="textrenes">
+      <h4>John Jenrick A. Renes</h4>
+      <h5>Document Team</h5>
+    </div>
+  </section>
+  <script src="{{ url_for('static', filename='parallax.js') }}"></script>
 </body>
 </html>

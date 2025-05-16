@@ -6,8 +6,8 @@ from functools import wraps
 from flask import Flask, g, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
+from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.preprocessing import image # type: ignore
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
@@ -309,7 +309,22 @@ def delete_user(user_id):
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    hill1_path = 'rscrs/hill1.png'
+    hill2_path = 'rscrs/hill2.png'
+    hill3_path = 'rscrs/hill3.png'
+    hill4_path = 'rscrs/hill4.png'
+    hill5_path = 'rscrs/hill5.png'
+    tree_path = 'rscrs/tree.png'
+    leaf_path = 'rscrs/leaf.png'
+    plant_path = 'rscrs/plant.png'
+    danielimg_path = 'rscrs/danielprofile.png'
+    limimg_path = 'rscrs/limprofile.png'
+    fuentesimg_path = 'rscrs/fuentesprofile.png'
+    arguellesimg_path = 'rscrs/arguellesprofile.jpg'
+    almoroimg_path = 'rscrs/almoroprofile.png'
+    renesimg_path = 'rscrs/renesprofile.png'
+    return render_template('about.html', hill1=hill1_path, hill2=hill2_path, hill3=hill3_path, hill4=hill4_path, hill5=hill5_path, tree=tree_path, leaf=leaf_path, plant=plant_path,
+                           danielimg=danielimg_path, limimg=limimg_path, fuentesimg=fuentesimg_path, arguellesimg=arguellesimg_path, almoroimg=almoroimg_path, renesimg=renesimg_path)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
